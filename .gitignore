@@ -24,8 +24,6 @@ mono_crash.*
 
 x64/
 x86/
-!vendor/SDL2/lib/x64
-!vendor/SDL2/lib/x86
 
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
@@ -366,3 +364,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+#!vendor/SDL2/lib/x64
+#!vendor/SDL2/lib/x86
+!vendor/**/*
