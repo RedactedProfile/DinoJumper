@@ -2,7 +2,8 @@
 
 import Utility;
 import Window;
-
+
+
 int main()
 {
 	Console::Out("Welcome");
