@@ -7,8 +7,10 @@ export module Primitives;
 export class Quad
 {
 public:
+	static inline GLuint vboId = -1;
+	static inline GLuint iboId = -1;
 	static inline GLuint shaderProgramId = -1;
-
+	static inline std::vector<uint16_t> indexData = { 0, 1, 2, 3 };
 	static inline std::vector<GLfloat> vertexData{
 		-0.5f, -0.5f,
 		 0.5f, -0.5f,
@@ -16,25 +18,24 @@ public:
 		-0.5f,  0.5f
 	};
 
-	static inline std::vector<uint16_t> indexData = { 0, 1, 2, 3 };
+	static inline std::vector<GLfloat> uvData{
+		0.0f, 0.0f, 
+		1.0f, 0.0f,
+		1.0f, 1.0f, 
+		0.0f, 1.0f
+	};
 
-	
 
-	glm::mat4x4 translation;
-	glm::mat4x4 rotation;
-	glm::mat4x4 scale;
-
-	GLuint vboId = -1;
-	GLuint iboId = -1;
-
-	static 
-	void InitQuad()  
+	static void InitQuad()  
 	{
 		// Check if we've initialized already
 		if (Quad::shaderProgramId != -1)
 			return;
 
-		// Compile Shaders
+		///////////
+		/// Quad Shader
+		///////////
+
 		const char* vertShaderSource = R""""(
 #version 460 core
 uniform mat4 uViewMatrix, uProjMatrix, uWorldMatrix;
@@ -70,31 +71,32 @@ void main() {
 
 		glDeleteShader(vertShaderProgram);
 		glDeleteShader(fragShaderProgram);
-	}
 
-	static Quad Create()
-	{
-		Quad newQuad;
+		///////////
+		/// Quad Mesh Buffers
+		///////////
 
-		// Create VBO
 		GLuint vbo;
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), Quad::vertexData.data(), GL_STATIC_DRAW);
-		newQuad.vboId = vbo;
+		Quad::vboId = vbo;
 
-		// Create IBO
 		GLuint ibo;
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(GLuint), Quad::indexData.data(), GL_STATIC_DRAW);
-		newQuad.iboId = ibo;
+		Quad::iboId = ibo;
 
-		// Vertex Shader
-		
+		///////////
+		/// Quad Vertex Array Object
+		///////////
 
-		// Fragment Shader
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
+		glEnableVertexAttribArray(0);
 
-		return newQuad;
+
 	}
+
+
 };

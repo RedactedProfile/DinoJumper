@@ -5,18 +5,19 @@ module;
 
 export module Dino;
 
-import Primitives;
-
+import Primitives;
 
 export class Dino
 {
 private:
-	Quad renderable;
+	glm::mat4x4 translation;
+	glm::mat4x4 rotation;
+	glm::mat4x4 scale;
 
 public:
 
 	void Init()
 	{
-		renderable = Quad::Create();
+		
 	}
 };
