@@ -5,8 +5,8 @@ module;
 export module Window;
 
 import Utility;
-
 import Game;
+import Primitives;
 
 export class Window
 {
@@ -30,7 +30,7 @@ public:
 		SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		
 		auto newWindow = SDL_CreateWindow("Dino", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
@@ -55,6 +55,8 @@ public:
 			printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 		}
 
+		
+		Quad::InitQuad();
 
 		Window::game = new Game();
 
