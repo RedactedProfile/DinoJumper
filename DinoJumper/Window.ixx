@@ -13,8 +13,6 @@ export class Window
 public:
 	static inline bool open = true;
 	static inline SDL_Window* window;
-	static inline SDL_Surface* windowSurface;
-	static inline SDL_Renderer* renderer;
 	static inline SDL_GLContext context;
 
 	static inline Game* game;
@@ -33,12 +31,10 @@ public:
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		
-		auto newWindow = SDL_CreateWindow("Dino", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
+		auto newWindow = SDL_CreateWindow("DinoGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
 
 		Window::window = newWindow;
 		Window::context = SDL_GL_CreateContext(Window::window);
-		Window::windowSurface = SDL_GetWindowSurface(Window::window);
-		Window::renderer = SDL_CreateRenderer(Window::window, -1, SDL_RENDERER_ACCELERATED);
 
 		//Initialize GLEW
 		glewExperimental = GL_TRUE;
@@ -55,8 +51,14 @@ public:
 			printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 		}
 
+		// Initalize OpenGL
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glMatrixMode(GL_PROJECTION_MATRIX);
+		glLoadIdentity();
 		
-		Quad::InitQuad();
+		// Install Primitives
+		Quad::Install();
+
 
 		Window::game = new Game();
 
@@ -89,13 +91,13 @@ public:
 
 	static void Clean()
 	{
-		SDL_DestroyRenderer(Window::renderer);
 		SDL_DestroyWindow(Window::window);
 	}
 
 	static void Display()
 	{
-		SDL_RenderClear(Window::renderer);
-		SDL_RenderPresent(Window::renderer);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		SDL_GL_SwapWindow(Window::window);
 	}
 };

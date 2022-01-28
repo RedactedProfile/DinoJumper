@@ -26,7 +26,7 @@ public:
 	};
 
 
-	static void InitQuad()  
+	static void Install()  
 	{
 		// Check if we've initialized already
 		if (Quad::shaderProgramId != -1)
