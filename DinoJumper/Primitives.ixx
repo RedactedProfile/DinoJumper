@@ -14,10 +14,9 @@ public:
 
 	static inline std::vector<uint16_t> indexData = { 0, 1, 2, 3 };
 	static inline std::vector<GLfloat> vertexData{
-		-0.5f, -0.5f,
-		 0.5f, -0.5f,
-		 0.5f,  0.5f,
-		-0.5f,  0.5f
+		-1.0f, -1.0f, 0.0f,  
+		1.0f, -1.0f, 0.0f,   
+		1.0f, 1.0f, 0.0f,    
 	};
 
 	static inline std::vector<GLfloat> uvData{
@@ -30,49 +29,79 @@ public:
 
 	static void Install()  
 	{
-		auto test = Quad::shaderProgramId;
 		// Check if we've initialized already
 		if (Quad::shaderProgramId > 0)
 			return;
 
 		///////////
-		/// Quad Shader
+		/// Shader. I've stuffed it in here for now, plan to separate later
 		///////////
 
-		const char* vertShaderSource = R""""(
-#version 460 core
-//uniform mat4 uViewMatrix, uProjMatrix, uWorldMatrix;
+		const char* vertShaderSource = R""""(#version 330 core
 layout (location = 0) in vec3 aPosition;
-//attribute vec2 aUV;
-
-varying vec2 vUV;
-
 void main() {
-	// gl_Position = uProjMatrix * uViewMatrix * uWorldMatrix * vec4(aPosition, 1.0);
-	// vUV = aUV;
-    gl_Position = vec4(aPosition, 1.0);
+	gl_Position = vec4(aPosition, 1.0);
 }
 		)"""";
 
-		const char* fragShaderSource = R""""(
-#version 460 core
-precision highp float;
-uniform sampler2D uSampler;
-varying vec2 vUV;
+		const char* fragShaderSource = R""""(#version 330 core
+//uniform sampler2D uSampler;
+out vec3 color;
 
 void main() {
-	// gl_FragColor = texture2D(uSampler, vUV);
-	gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	// color = texture2D(uSampler, vUV);
+	color = vec3(1, 0, 1);
 }
 		)"""";
 
-		GLuint vertShaderProgram = glCreateShaderProgramv(GL_VERTEX_SHADER, 1, &vertShaderSource);
-		GLuint fragShaderProgram = glCreateShaderProgramv(GL_FRAGMENT_SHADER, 1, &fragShaderSource);
+		GLint compileResult = GL_FALSE;
+		int infoLogLength;
 
+		// Compile Vertex Shader
+		//GLuint vertShaderProgram = glCreateShaderProgramv(GL_VERTEX_SHADER, 1, &vertShaderSource); 
+		GLuint vertShaderProgram = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertShaderProgram, 1, &vertShaderSource, NULL);
+		glCompileShader(vertShaderProgram);
+		// Check Vertex Shader
+		glGetShaderiv(vertShaderProgram, GL_COMPILE_STATUS, &compileResult);
+		glGetShaderiv(vertShaderProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
+		if (infoLogLength > 0) 
+		{
+			std::vector<char> vertShaderErrorMessage(infoLogLength + 1);
+			glGetShaderInfoLog(vertShaderProgram, infoLogLength, NULL, &vertShaderErrorMessage[0]);
+			std::cout << "Vert Shader Error: " << &vertShaderErrorMessage[0] << std::endl;
+		}
+		
+		// Compile Frag Shader
+		//GLuint fragShaderProgram = glCreateShaderProgramv(GL_FRAGMENT_SHADER, 1, &fragShaderSource);
+		GLuint fragShaderProgram = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragShaderProgram, 1, &fragShaderSource, NULL);
+		glCompileShader(fragShaderProgram);
+		// Check Frag Shader
+		glGetShaderiv(fragShaderProgram, GL_COMPILE_STATUS, &compileResult);
+		glGetShaderiv(fragShaderProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
+		if (infoLogLength > 0)
+		{
+			std::vector<char> fragShaderErrorMessage(infoLogLength + 1);
+			glGetShaderInfoLog(fragShaderProgram, infoLogLength, NULL, &fragShaderErrorMessage[0]);
+			std::cout << "Frag Shader Error: " << &fragShaderErrorMessage[0] << std::endl;
+		}
+
+		// Link Shader Program
 		Quad::shaderProgramId = glCreateProgram();
 		glAttachShader(Quad::shaderProgramId, vertShaderProgram);
 		glAttachShader(Quad::shaderProgramId, fragShaderProgram);
 		glLinkProgram(Quad::shaderProgramId);
+
+		// Check the program
+		glGetProgramiv(Quad::shaderProgramId, GL_LINK_STATUS, &compileResult);
+		glGetProgramiv(Quad::shaderProgramId, GL_INFO_LOG_LENGTH, &infoLogLength);
+		if (infoLogLength > 0)
+		{
+			std::vector<char> shaderProgramErrorMessage(infoLogLength + 1);
+			glGetProgramInfoLog(Quad::shaderProgramId, infoLogLength, NULL, &shaderProgramErrorMessage[0]);
+			std::cout << "Link Shader Error: " << &shaderProgramErrorMessage[0] << std::endl;
+		}
 
 		glDeleteShader(vertShaderProgram);
 		glDeleteShader(fragShaderProgram);
@@ -92,16 +121,15 @@ void main() {
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Quad::vertexData.data()), Quad::vertexData.data(), GL_STATIC_DRAW);
 		Quad::vboId = vbo;
+		glUseProgram(Quad::shaderProgramId);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-		//glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
-		//glEnableVertexAttribArray(0);
-
-
-		GLuint ibo;
+		/*GLuint ibo;
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Quad::indexData.data()), Quad::indexData.data(), GL_STATIC_DRAW);
-		Quad::iboId = ibo;
+		Quad::iboId = ibo;*/
 	}
 
 
