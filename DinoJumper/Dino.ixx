@@ -30,8 +30,20 @@ public:
 	void Draw()
 	{
 		glUseProgram(Quad::shaderProgramId);
-		glBindVertexArray(Quad::vaoId);
-		glDrawElements(GL_TRIANGLES, 4, GL_UNSIGNED_INT, 0);
-		//glBindVertexArray(0);
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, Quad::vboId);
+		glVertexAttribPointer(
+			0, 
+			4,
+			GL_FLOAT, 
+			GL_FALSE, 
+			0, 
+			(void*)0
+		);
+		//glEnableVertexAttribArray(1);
+
+		glDrawArrays(GL_QUADS, 0, 8);
+
+		
 	}
 };

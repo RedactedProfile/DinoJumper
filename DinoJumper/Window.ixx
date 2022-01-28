@@ -59,7 +59,7 @@ public:
 		glMatrixMode(GL_PROJECTION_MATRIX);
 		glLoadIdentity();
 
-		glViewport(0, 0, Window::WIN_WIDTH, Window::WIN_HEIGHT);
+		//glViewport(0, 0, Window::WIN_WIDTH, Window::WIN_HEIGHT);
 		
 		// Install Primitives
 		Quad::Install();

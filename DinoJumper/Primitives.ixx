@@ -11,6 +11,7 @@ public:
 	static inline GLuint vboId = -1;
 	static inline GLuint iboId = -1;
 	static inline GLuint shaderProgramId = -1;
+
 	static inline std::vector<uint16_t> indexData = { 0, 1, 2, 3 };
 	static inline std::vector<GLfloat> vertexData{
 		-0.5f, -0.5f,
@@ -29,8 +30,9 @@ public:
 
 	static void Install()  
 	{
+		auto test = Quad::shaderProgramId;
 		// Check if we've initialized already
-		if (Quad::shaderProgramId != -1)
+		if (Quad::shaderProgramId > 0)
 			return;
 
 		///////////
@@ -88,17 +90,17 @@ void main() {
 		GLuint vbo;
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), Quad::vertexData.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Quad::vertexData.data()), Quad::vertexData.data(), GL_STATIC_DRAW);
 		Quad::vboId = vbo;
 
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
-		glEnableVertexAttribArray(0);
+		//glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
+		//glEnableVertexAttribArray(0);
 
 
 		GLuint ibo;
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(GLuint), Quad::indexData.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Quad::indexData.data()), Quad::indexData.data(), GL_STATIC_DRAW);
 		Quad::iboId = ibo;
 	}
 
