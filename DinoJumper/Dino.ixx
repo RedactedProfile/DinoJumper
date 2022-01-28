@@ -22,8 +22,16 @@ public:
 
 	}
 
+	void Update()
+	{
+		
+	}
+
 	void Draw()
 	{
-
+		glUseProgram(Quad::shaderProgramId);
+		glBindVertexArray(Quad::vaoId);
+		glDrawElements(GL_TRIANGLES, 4, GL_UNSIGNED_INT, 0);
+		//glBindVertexArray(0);
 	}
 };

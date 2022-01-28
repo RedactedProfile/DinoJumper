@@ -11,6 +11,9 @@ import Primitives;
 export class Window
 {
 public:
+	static inline const int16_t WIN_WIDTH = 640;
+	static inline const int16_t WIN_HEIGHT = 480;
+
 	static inline bool open = true;
 	static inline SDL_Window* window;
 	static inline SDL_GLContext context;
@@ -31,7 +34,7 @@ public:
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		
-		auto newWindow = SDL_CreateWindow("DinoGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
+		auto newWindow = SDL_CreateWindow("DinoGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Window::WIN_WIDTH, Window::WIN_HEIGHT, SDL_WINDOW_OPENGL);
 
 		Window::window = newWindow;
 		Window::context = SDL_GL_CreateContext(Window::window);
@@ -55,6 +58,8 @@ public:
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glMatrixMode(GL_PROJECTION_MATRIX);
 		glLoadIdentity();
+
+		glViewport(0, 0, Window::WIN_WIDTH, Window::WIN_HEIGHT);
 		
 		// Install Primitives
 		Quad::Install();
@@ -83,6 +88,7 @@ public:
 				Window::game->HandleEvents(event);
 			}
 
+			Window::Update();
 			Window::Display();
 		}
 
@@ -94,10 +100,20 @@ public:
 		SDL_DestroyWindow(Window::window);
 	}
 
+	static void Update()
+	{
+		if (Window::game == nullptr) return;
+		Window::game->Update();
+	}
+
 	static void Display()
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		if (Window::game != nullptr) {
+			Window::game->Render();
+		}
+		
 		SDL_GL_SwapWindow(Window::window);
 	}
 };

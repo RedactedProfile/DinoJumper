@@ -42,4 +42,14 @@ public:
 	{
 
 	}
+
+	void Update()
+	{
+		if (player != nullptr) player->Update();
+	}
+
+	void Render()
+	{
+		if (player != nullptr) player->Draw();
+	}
 };
