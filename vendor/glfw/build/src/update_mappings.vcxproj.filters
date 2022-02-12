@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\djdar\source\repos\DinoJumper\vendor\glfw\build\CMakeFiles\3696b3e7cb729578bde41509fce4545e\update_mappings.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\djdar\source\repos\DinoJumper\vendor\glfw\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\djdar\source\repos\DinoJumper\vendor\glfw\build\src\CMakeFiles\update_mappings" />
+    <None Include="C:\Users\djdar\source\repos\DinoJumper\vendor\glfw\src\mappings.h.in">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="C:\Users\djdar\source\repos\DinoJumper\vendor\glfw\CMake\GenerateMappings.cmake" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B707EB50-9235-3BA9-BEDD-820AD68750EB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{9DC2C48C-EA59-3130-9264-A0056C019298}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

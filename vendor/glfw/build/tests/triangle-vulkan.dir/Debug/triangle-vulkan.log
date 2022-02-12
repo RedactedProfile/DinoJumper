@@ -1,0 +1,6 @@
+﻿  Building Custom Rule C:/Users/djdar/source/repos/DinoJumper/vendor/glfw/tests/CMakeLists.txt
+  CMake does not need to re-run because C:/Users/djdar/source/repos/DinoJumper/vendor/glfw/build/tests/CMakeFiles/generate.stamp is up-to-date.
+  triangle-vulkan.c
+  glad_vulkan.c
+  Generating Code...
+  triangle-vulkan.vcxproj -> C:\Users\djdar\source\repos\DinoJumper\vendor\glfw\build\tests\Debug\triangle-vulkan.exe

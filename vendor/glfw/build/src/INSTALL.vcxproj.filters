@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\djdar\source\repos\DinoJumper\vendor\glfw\build\CMakeFiles\3696b3e7cb729578bde41509fce4545e\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B707EB50-9235-3BA9-BEDD-820AD68750EB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

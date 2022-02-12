@@ -1,0 +1,6 @@
+﻿  Building Custom Rule C:/Users/djdar/source/repos/DinoJumper/vendor/glfw/examples/CMakeLists.txt
+  CMake does not need to re-run because C:/Users/djdar/source/repos/DinoJumper/vendor/glfw/build/examples/CMakeFiles/generate.stamp is up-to-date.
+  boing.c
+  glad_gl.c
+  Generating Code...
+  boing.vcxproj -> C:\Users\djdar\source\repos\DinoJumper\vendor\glfw\build\examples\Debug\boing.exe

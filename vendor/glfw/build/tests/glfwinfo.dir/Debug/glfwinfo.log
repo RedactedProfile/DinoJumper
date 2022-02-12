@@ -1,0 +1,8 @@
+﻿  Building Custom Rule C:/Users/djdar/source/repos/DinoJumper/vendor/glfw/tests/CMakeLists.txt
+  CMake does not need to re-run because C:/Users/djdar/source/repos/DinoJumper/vendor/glfw/build/tests/CMakeFiles/generate.stamp is up-to-date.
+  glfwinfo.c
+  getopt.c
+  glad_gl.c
+  glad_vulkan.c
+  Generating Code...
+  glfwinfo.vcxproj -> C:\Users\djdar\source\repos\DinoJumper\vendor\glfw\build\tests\Debug\glfwinfo.exe

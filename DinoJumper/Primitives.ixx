@@ -4,6 +4,8 @@ module;
 
 export module Primitives;
 
+import Shader;
+
 export class Quad
 {
 public:
@@ -54,57 +56,7 @@ void main() {
 }
 		)"""";
 
-		GLint compileResult = GL_FALSE;
-		int infoLogLength;
-
-		// Compile Vertex Shader
-		//GLuint vertShaderProgram = glCreateShaderProgramv(GL_VERTEX_SHADER, 1, &vertShaderSource); 
-		GLuint vertShaderProgram = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertShaderProgram, 1, &vertShaderSource, NULL);
-		glCompileShader(vertShaderProgram);
-		// Check Vertex Shader
-		glGetShaderiv(vertShaderProgram, GL_COMPILE_STATUS, &compileResult);
-		glGetShaderiv(vertShaderProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
-		if (infoLogLength > 0) 
-		{
-			std::vector<char> vertShaderErrorMessage(infoLogLength + 1);
-			glGetShaderInfoLog(vertShaderProgram, infoLogLength, NULL, &vertShaderErrorMessage[0]);
-			std::cout << "Vert Shader Error: " << &vertShaderErrorMessage[0] << std::endl;
-		}
-		
-		// Compile Frag Shader
-		//GLuint fragShaderProgram = glCreateShaderProgramv(GL_FRAGMENT_SHADER, 1, &fragShaderSource);
-		GLuint fragShaderProgram = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragShaderProgram, 1, &fragShaderSource, NULL);
-		glCompileShader(fragShaderProgram);
-		// Check Frag Shader
-		glGetShaderiv(fragShaderProgram, GL_COMPILE_STATUS, &compileResult);
-		glGetShaderiv(fragShaderProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
-		if (infoLogLength > 0)
-		{
-			std::vector<char> fragShaderErrorMessage(infoLogLength + 1);
-			glGetShaderInfoLog(fragShaderProgram, infoLogLength, NULL, &fragShaderErrorMessage[0]);
-			std::cout << "Frag Shader Error: " << &fragShaderErrorMessage[0] << std::endl;
-		}
-
-		// Link Shader Program
-		Quad::shaderProgramId = glCreateProgram();
-		glAttachShader(Quad::shaderProgramId, vertShaderProgram);
-		glAttachShader(Quad::shaderProgramId, fragShaderProgram);
-		glLinkProgram(Quad::shaderProgramId);
-
-		// Check the program
-		glGetProgramiv(Quad::shaderProgramId, GL_LINK_STATUS, &compileResult);
-		glGetProgramiv(Quad::shaderProgramId, GL_INFO_LOG_LENGTH, &infoLogLength);
-		if (infoLogLength > 0)
-		{
-			std::vector<char> shaderProgramErrorMessage(infoLogLength + 1);
-			glGetProgramInfoLog(Quad::shaderProgramId, infoLogLength, NULL, &shaderProgramErrorMessage[0]);
-			std::cout << "Link Shader Error: " << &shaderProgramErrorMessage[0] << std::endl;
-		}
-
-		glDeleteShader(vertShaderProgram);
-		glDeleteShader(fragShaderProgram);
+		Quad::shaderProgramId = Shader::Compile(vertShaderSource, fragShaderSource);
 
 		///////////
 		/// Quad Mesh Buffers

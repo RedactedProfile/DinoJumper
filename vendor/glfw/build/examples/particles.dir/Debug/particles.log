@@ -1,0 +1,8 @@
+﻿  Building Custom Rule C:/Users/djdar/source/repos/DinoJumper/vendor/glfw/examples/CMakeLists.txt
+  CMake does not need to re-run because C:/Users/djdar/source/repos/DinoJumper/vendor/glfw/build/examples/CMakeFiles/generate.stamp is up-to-date.
+  particles.c
+  tinycthread.c
+  getopt.c
+  glad_gl.c
+  Generating Code...
+  particles.vcxproj -> C:\Users\djdar\source\repos\DinoJumper\vendor\glfw\build\examples\Debug\particles.exe

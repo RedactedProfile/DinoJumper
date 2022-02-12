@@ -1,0 +1,10 @@
+^C:\USERS\DJDAR\SOURCE\REPOS\DINOJUMPER\VENDOR\GLFW\SRC\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/djdar/source/repos/DinoJumper/vendor/glfw -BC:/Users/djdar/source/repos/DinoJumper/vendor/glfw/build --check-stamp-file C:/Users/djdar/source/repos/DinoJumper/vendor/glfw/build/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

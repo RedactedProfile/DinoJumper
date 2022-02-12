@@ -1,0 +1,6 @@
+﻿  Building Custom Rule C:/Users/djdar/source/repos/DinoJumper/vendor/glfw/tests/CMakeLists.txt
+  CMake does not need to re-run because C:/Users/djdar/source/repos/DinoJumper/vendor/glfw/build/tests/CMakeFiles/generate.stamp is up-to-date.
+  joysticks.c
+  glad_gl.c
+  Generating Code...
+  joysticks.vcxproj -> C:\Users\djdar\source\repos\DinoJumper\vendor\glfw\build\tests\Debug\joysticks.exe
