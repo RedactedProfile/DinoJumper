@@ -34,12 +34,12 @@ public:
 	static inline GLFWwindow* window;
 	
 
-	static inline GLuint frameBuffer;
-	static inline GLuint renderBufferObject;
-	static inline GLuint renderFrameBuffer;
-	static inline GLuint renderBufferTexture;
-	static inline GLuint renderScreenShader;
-	static inline GLuint renderVao;
+	static inline GLuint frameBuffer = 0;
+	static inline GLuint renderBufferObject = 0;
+	static inline GLuint renderFrameBuffer = 0;
+	static inline GLuint renderBufferTexture = 0;
+	static inline GLuint renderScreenShader = 0;
+	static inline GLuint renderVao = 0;
 
 	static inline Game* game;
 
@@ -49,7 +49,7 @@ public:
 	{
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		
 		Window::window = glfwCreateWindow(Window::WIN_WIDTH, Window::WIN_HEIGHT, "SuprSecrt", NULL, NULL);
@@ -97,7 +97,7 @@ public:
 		/*glMatrixMode(GL_PROJECTION_MATRIX);
 		glLoadIdentity();*/
 
-		const char* screenVertexShaderSource = R""""(#version 440 core 
+		const char* screenVertexShaderSource = R""""(#version 330 core 
 layout (location = 0) in vec2 aPos;
 
 out vec2 TexCoords;
@@ -109,7 +109,7 @@ void main()
 }
 		)"""";
 
-		const char* screenFragShaderSource = R""""(#version 440 core 
+		const char* screenFragShaderSource = R""""(#version 330 core 
 
 in vec2 TexCoords;
 
@@ -121,6 +121,36 @@ void main()
 }
 		)"""";
 
+
+		// create and cache the quad we'll use to slap the final texture on 
+		unsigned int tmpRenderVao = 0, tmpRenderVbo = 0;
+		glGenVertexArrays(1, &tmpRenderVao);
+		glBindVertexArray(tmpRenderVao);
+
+		std::vector<float> screenQuadData = {
+			-1.0f, -1.0f, // BL
+			1.0f, -1.0f,  // BR
+			1.0f, 1.0f,   // TR
+
+			1.0f, 1.0f,   // TR
+			-1.0f, 1.0f,  // TL
+			-1.0f, -1.0f, // BL
+		};
+
+		// VAO
+		glGenBuffers(1, &tmpRenderVbo);
+		glBindBuffer(GL_ARRAY_BUFFER, tmpRenderVao);
+		glBufferData(GL_ARRAY_BUFFER, screenQuadData.size() * sizeof(float), screenQuadData.data(), GL_STATIC_DRAW);
+
+		// BufferLayout
+			// Position 
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2, 0);
+		glEnableVertexAttribArray(0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+
+		Window::renderVao = tmpRenderVao;
 		Window::renderScreenShader = Shader::Compile(screenVertexShaderSource, screenFragShaderSource);
 
 		// create off-screen rendering buffers
@@ -239,8 +269,8 @@ void main()
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glUseProgram(renderScreenShader);
-		glBindVertexArray(renderVao);
+		glUseProgram(Window::renderScreenShader);
+		glBindVertexArray(Window::renderVao);
 		glDisable(GL_DEPTH_TEST);
 		glBindTexture(GL_TEXTURE_2D, renderBufferTexture);
 		glDrawArrays(GL_TRIANGLES, 0, 24);
