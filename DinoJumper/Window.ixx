@@ -48,8 +48,8 @@ public:
 	static void CreateWindow()
 	{
 		glfwInit();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		
 		Window::window = glfwCreateWindow(Window::WIN_WIDTH, Window::WIN_HEIGHT, "SuprSecrt", NULL, NULL);
@@ -89,106 +89,8 @@ public:
 
 		
 		// Initalize OpenGL
-		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glClearColor(0.39f, 0.58f, 0.93f, 1.0f);
 
-		//glDisable(GL_CULL_FACE);
-		//glDisable(GL_LIGHTING);
-		
-		/*glMatrixMode(GL_PROJECTION_MATRIX);
-		glLoadIdentity();*/
-
-		const char* screenVertexShaderSource = R""""(#version 330 core 
-layout (location = 0) in vec2 aPos;
-
-out vec2 TexCoords;
-
-void main()
-{
-    gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);
-    TexCoords = aPos.xy;
-}
-		)"""";
-
-		const char* screenFragShaderSource = R""""(#version 330 core 
-
-in vec2 TexCoords;
-
-uniform sampler2D screenTexture;
-
-void main() 
-{
-    gl_FragColor = texture(screenTexture, 0.5*(vec2(1,1) + TexCoords));
-}
-		)"""";
-
-
-		// create and cache the quad we'll use to slap the final texture on 
-		unsigned int tmpRenderVao = 0, tmpRenderVbo = 0;
-		glGenVertexArrays(1, &tmpRenderVao);
-		glBindVertexArray(tmpRenderVao);
-
-		std::vector<float> screenQuadData = {
-			-1.0f, -1.0f, // BL
-			1.0f, -1.0f,  // BR
-			1.0f, 1.0f,   // TR
-
-			1.0f, 1.0f,   // TR
-			-1.0f, 1.0f,  // TL
-			-1.0f, -1.0f, // BL
-		};
-
-		// VAO
-		glGenBuffers(1, &tmpRenderVbo);
-		glBindBuffer(GL_ARRAY_BUFFER, tmpRenderVao);
-		glBufferData(GL_ARRAY_BUFFER, screenQuadData.size() * sizeof(float), screenQuadData.data(), GL_STATIC_DRAW);
-
-		// BufferLayout
-			// Position 
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2, 0);
-		glEnableVertexAttribArray(0);
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
-
-		Window::renderVao = tmpRenderVao;
-		Window::renderScreenShader = Shader::Compile(screenVertexShaderSource, screenFragShaderSource);
-
-		// create off-screen rendering buffers
-		// This is for the psx style rendering of low-rez render and upscaling to a higher resolution
-		glGenFramebuffers(1, &Window::renderFrameBuffer);
-		glBindFramebuffer(GL_FRAMEBUFFER, Window::renderFrameBuffer);
-
-
-		glGenTextures(1, &Window::renderBufferTexture);
-		glBindTexture(GL_TEXTURE_2D, Window::renderBufferTexture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Window::WIN_WIDTH, Window::WIN_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderBufferTexture, 0);
-
-		glGenRenderbuffers(1, &Window::renderBufferObject);
-		glBindRenderbuffer(GL_RENDERBUFFER, renderBufferObject);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, Window::WIN_WIDTH, Window::WIN_HEIGHT);
-		glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBufferObject);
-
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		{
-			std::cout << "ERROR: FrameBuffer is not complete!";
-		}
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-
-		auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-		if (fboStatus != GL_FRAMEBUFFER_COMPLETE) {
-			std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete! :: " << fboStatus << std::endl;
-		}
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	
 
 		glViewport(0, 0, Window::WIN_WIDTH, Window::WIN_HEIGHT);
 		
@@ -211,31 +113,11 @@ void main()
 
 		}
 
-		/*SDL_Event event;
-		while (Window::open)
-		{
-			if (SDL_PollEvent(&event))
-			{
-				switch (event.type)
-				{
-				case SDL_QUIT:
-					Window::open = false;
-					break;
-				}
-
-				Window::game->HandleEvents(event);
-			}
-
-			Window::Update();
-			Window::Display();
-		}*/
-
 		Window::Clean();
 	}
 
 	static void Clean()
 	{
-		//SDL_DestroyWindow(Window::window);
 		glfwTerminate();
 	}
 
@@ -247,37 +129,14 @@ void main()
 
 	static void Display()
 	{
-		// pass 1: bind to offscreen buffer
-
-		glBindFramebuffer(GL_FRAMEBUFFER, Window::renderFrameBuffer);
-		glViewport(0, 0, Window::WIN_WIDTH, Window::WIN_HEIGHT);
-		glClearColor(0.39f, 0.58f, 0.93f, 1.0f);
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-
-
+		glClear(GL_COLOR_BUFFER_BIT);
+	
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		if (Window::game != nullptr) {
 			Window::game->Render();
 		}
 
-
-		// pass 2: render texture to fullscreen quad
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0, 0, Window::WIN_WIDTH, Window::WIN_HEIGHT);
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glUseProgram(Window::renderScreenShader);
-		glBindVertexArray(Window::renderVao);
-		glDisable(GL_DEPTH_TEST);
-		glBindTexture(GL_TEXTURE_2D, renderBufferTexture);
-		glDrawArrays(GL_TRIANGLES, 0, 24);
-
-
 		// Render ImGui Stuff
-
 
 		// Swap
 		glfwSwapBuffers(Window::window);

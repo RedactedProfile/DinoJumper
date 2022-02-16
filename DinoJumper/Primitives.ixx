@@ -9,17 +9,24 @@ import Shader;
 export class Quad
 {
 public:
-	static inline GLuint vaoId = -1;
-	static inline GLuint vboId = -1;
-	static inline GLuint iboId = -1;
-	static inline GLuint shaderProgramId = -1;
+	static inline GLuint vaoId = 0;
+	static inline GLuint vboId = 0;
+	static inline GLuint iboId = 0;
+	static inline GLuint shaderProgramId = 0;
 	static inline bool installed = false;
 
-	static inline std::vector<uint16_t> indexData = { 0, 1, 2, 3 };
-	static inline std::vector<GLfloat> vertexData{
-		-1.0f, -1.0f, 0.0f,  
-		1.0f, -1.0f, 0.0f,   
-		1.0f, 1.0f, 0.0f,    
+	// set up vertex data (and buffer(s)) and configure vertex attributes
+	// ------------------------------------------------------------------
+	
+	static inline std::vector<unsigned int> indexData = { 
+		0, 1, 3,  // first Triangle
+		1, 2, 3   // second Triangle
+	};
+	static inline std::vector<float> vertexData{
+		0.5f,  0.5f, 0.0f,  // top right
+		 0.5f, -0.5f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f,  // bottom left
+		-0.5f,  0.5f, 0.0f   // top left 
 	};
 
 	static inline std::vector<GLfloat> uvData{
@@ -43,17 +50,17 @@ public:
 		const char* vertShaderSource = R""""(#version 330 core
 layout (location = 0) in vec3 aPosition;
 void main() {
-	gl_Position = vec4(aPosition, 1.0);
+	gl_Position = vec4(aPosition.x, aPosition.y, aPosition.z, 1.0);
 }
 		)"""";
 
 		const char* fragShaderSource = R""""(#version 330 core
 //uniform sampler2D uSampler;
-out vec3 color;
+out vec4 FragColor;
 
 void main() {
 	// color = texture2D(uSampler, vUV);
-	color = vec3(1, 0, 1);
+	FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
 }
 		)"""";
 
@@ -63,8 +70,30 @@ void main() {
 		/// Quad Mesh Buffers
 		///////////
 
+		unsigned int VBO, VAO, EBO;
 
-		GLuint vao;
+		glGenVertexArrays(1, &VAO);
+		glGenBuffers(1, &VBO);
+		glGenBuffers(1, &EBO);
+
+		glBindVertexArray(VAO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Quad::vertexData.data()), Quad::vertexData.data(), GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Quad::indexData.data()), Quad::indexData.data(), GL_STATIC_DRAW);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		Quad::vaoId = VAO;
+		Quad::iboId = EBO;
+		Quad::vboId = VBO;
+
+		/*GLuint vao;
 		glGenVertexArrays(1, &vao);
 		glBindVertexArray(vao);
 		Quad::vaoId = vao;
@@ -72,7 +101,7 @@ void main() {
 		GLuint vbo;
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Quad::vertexData.data()), Quad::vertexData.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Quad::vertexData.data()), Quad::vertexData.data(), GL_DYNAMIC_DRAW);
 		Quad::vboId = vbo;
 		glUseProgram(Quad::shaderProgramId);
 		glEnableVertexAttribArray(0);
@@ -81,8 +110,8 @@ void main() {
 		GLuint ibo;
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Quad::indexData.data()), Quad::indexData.data(), GL_STATIC_DRAW);
-		Quad::iboId = ibo;
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Quad::indexData.data()), Quad::indexData.data(), GL_DYNAMIC_DRAW);
+		Quad::iboId = ibo;*/
 
 		Quad::installed = true;
 	}

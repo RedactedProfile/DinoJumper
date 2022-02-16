@@ -42,12 +42,10 @@ public:
 		);*/
 		//glEnableVertexAttribArray(1);
 
-		glBindVertexArray(Quad::vaoId);
 		glUseProgram(Quad::shaderProgramId);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindVertexArray(Quad::vaoId);
+		
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		
 	}
