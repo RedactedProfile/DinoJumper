@@ -22,7 +22,7 @@ public:
 		// Check Vertex Shader
 		glGetShaderiv(vertShaderProgram, GL_COMPILE_STATUS, &compileResult);
 		glGetShaderiv(vertShaderProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
-		if (infoLogLength > 0)
+		if (compileResult != GL_TRUE)
 		{
 			std::vector<char> vertShaderErrorMessage(infoLogLength + 1);
 			glGetShaderInfoLog(vertShaderProgram, infoLogLength, NULL, &vertShaderErrorMessage[0]);
@@ -37,7 +37,7 @@ public:
 		// Check Frag Shader
 		glGetShaderiv(fragShaderProgram, GL_COMPILE_STATUS, &compileResult);
 		glGetShaderiv(fragShaderProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
-		if (infoLogLength > 0)
+		if (compileResult != GL_TRUE)
 		{
 			std::vector<char> fragShaderErrorMessage(infoLogLength + 1);
 			glGetShaderInfoLog(fragShaderProgram, infoLogLength, NULL, &fragShaderErrorMessage[0]);
@@ -53,7 +53,7 @@ public:
 		// Check the program
 		glGetProgramiv(shaderProgramId, GL_LINK_STATUS, &compileResult);
 		glGetProgramiv(shaderProgramId, GL_INFO_LOG_LENGTH, &infoLogLength);
-		if (infoLogLength > 0)
+		if (infoLogLength != GL_TRUE)
 		{
 			std::vector<char> shaderProgramErrorMessage(infoLogLength + 1);
 			glGetProgramInfoLog(shaderProgramId, infoLogLength, NULL, &shaderProgramErrorMessage[0]);

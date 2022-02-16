@@ -42,6 +42,7 @@ public:
 		);*/
 		//glEnableVertexAttribArray(1);
 
+		glBindVertexArray(Quad::vaoId);
 		glUseProgram(Quad::shaderProgramId);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
