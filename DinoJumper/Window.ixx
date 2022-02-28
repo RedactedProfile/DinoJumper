@@ -24,8 +24,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 export class Window
 {
 public:
-	static inline const int16_t WIN_WIDTH = 640;
-	static inline const int16_t WIN_HEIGHT = 480;
+	static inline const int16_t WIN_WIDTH = 800;
+	static inline const int16_t WIN_HEIGHT = 300;
 
 	static inline bool open = true;
 	/*static inline SDL_Window* window;
@@ -48,8 +48,8 @@ public:
 	static void CreateWindow()
 	{
 		glfwInit();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		
 		Window::window = glfwCreateWindow(Window::WIN_WIDTH, Window::WIN_HEIGHT, "SuprSecrt", NULL, NULL);

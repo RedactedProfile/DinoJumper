@@ -11,6 +11,7 @@ export class Game
 private:
 	
 	Dino* player = nullptr;
+	
 
 public:
 
