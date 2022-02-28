@@ -4,7 +4,7 @@ module;
 
 export module Game;
 
-import Dino;
+import World;
 
 export class Game
 {

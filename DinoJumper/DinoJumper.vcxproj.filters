@@ -21,9 +21,6 @@
     <ClCompile Include="Utility.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dino.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Primitives.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -36,10 +33,16 @@
     <ClCompile Include="Shader.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="World.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
